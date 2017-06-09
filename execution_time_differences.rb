@@ -54,15 +54,57 @@ p subsum_slow([2, 3, -6, 7, -6, 7])
 #O(n)
 def subsum_fast(arr)
   max_subsum = arr.first
+  last = nil
 
-  unchecked = false
+  arr.all? { |n| return arr.max if n < 1 }
+  arr[1..-1].each do |n|
+    if last
+      if last < 0
+        last = n
+      elsif last > 0
+        last = last + n
+      end
 
-  until unchecked
+      if last > max_subsum
+        max_subsum = last
+        last = nil
+      end
 
+    else
+      checking = max_subsum + n
+      if checking >= max_subsum
+        max_subsum = checking
+      elsif checking != 0
+        last = checking
+      end
+    end
   end
 
-
-
-
-
+  max_subsum
 end
+
+list = [2, 3, -6, 7, -6, 7]
+what = subsum_fast(list)
+puts "I am the sum #{what}"
+
+duh = [-5, -1, -3]
+p subsum_fast(duh)
+
+# #O(n)
+# def subsum_fast(arr)
+#   max_subsum = arr.first
+#   start_idx = 0
+#
+#   arr[1..-1].each.with_index(1) do |n,idx|
+#
+#
+#     checking_subsum = max_subsum + n
+#
+#
+#     if checking_subsum > max_subsum
+#       max_subsum = checking_subsum
+#     elsif checking_subsum < 0
+#       next
+#     end
+#   end
+# end
